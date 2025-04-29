@@ -16,6 +16,9 @@ Route::get('/home', function () {
     );
 });
 
-Route::get('/berita/{id}/{judul}', function ($id,$judul) {
-    return view('berita', ['id' => $id,'judul' => $judul]);
-});
+Route::get('/berita/{id}/{judul?}', function ($id,$judul = null) {
+    return view('berita', ['id' => $id,'judul' => $judul]); 
+}); /*untuk judul = null */
+
+/* Route::get('/berita/{id}/{judul}', function ($id,$judul) {
+    return view('berita', ['id' => $id,'judul' => $judul]); : untuk judul input manual */

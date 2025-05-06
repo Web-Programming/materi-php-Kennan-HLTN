@@ -10,7 +10,7 @@
      @include('header')
 
     <!-- ini bagian sidebar-->
-     @include('header')
+     @include('sidebar')
 
      <!-- ini bagian content-->
     @yield('content')

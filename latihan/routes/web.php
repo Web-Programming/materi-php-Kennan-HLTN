@@ -8,7 +8,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function() {
-    return view('beranda', ['name' => 'Vionetha Lavega', 'email' => 'vionetha2085@gmail.com', 'address' => '2A Tribrata Street']);
+    return view('beranda', ['name' => 'Kennan Hamilton', 'email' => 'kennanh2710@gmail.com', 'address' => 'Kedamaian Permai 2']);
 });
 
 Route::get('/berita/{id}/{judul?}', function ($id, $judul = null) {

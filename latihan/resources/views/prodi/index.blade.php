@@ -1,9 +1,7 @@
 @extends('layout.master')
 
-@section('title', 'Halaman List Prodi')
+@section('title', 'Prodi - Index')
 
 @section('content')
-<div>
-    <h1>Ini halaman prodi</h1>
-</div>
+<h1>Halaman Index Prodi</h1>
 @endsection

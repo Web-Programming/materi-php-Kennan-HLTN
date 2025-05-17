@@ -15,24 +15,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-      //menggunakan query builder
-      //ini untuk insert data ke dalam tabel users
-      //DB::table("users")->insert([
-        //'name' => "vionetha",
-        //'email' => "vionetha2085@gmail.com",
-        //'password'=> Hash::make("password"),
-      //]);
-      //fungsi insert() untuk menambah data(new record) ke dalam database
-      //sama seperti menjalankan fungsi insert into di sql workbench
+     
+        //menggunakan query builder
+        // DB::table("users")->insert([
+        //     'name' => 'rachmat2',
+        //     'email' => 'rachmat2@gmail.com',
+        //     'password' => Hash::make("password")
+        // ]);
 
-      //mengupdate data
-      DB::table("users")
-      ->where("id", 1)
-      ->update([
-        'password' => Hash::make("123456")
-        ]);
+        DB::table("users")
+            ->where("id", 1)
+            ->update([
+                'password' => Hash::make("123456")
+            ]);
 
-        //menghapus data
-        //DB::table("users")->where("id", 1)->delete();
+        //DB::table("users")->where("id", ">", 1)->delete();    
     }
 }

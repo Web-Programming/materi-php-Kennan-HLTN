@@ -60,7 +60,7 @@
                           {{ session('status') }}
                       </div>
                     @endif
-                    <form method="post" action="{{ url("prodi") }}">
+                    <form method="post" action="{{ url("prodi") }}" enctype="multipart/form-data">
                       @csrf
                       <div class="mb-3">
                         <label >Nama Prodi</label>
@@ -76,6 +76,13 @@
                           <div class="text-danger">{{ $message }}</div>
                         @enderror
                       </div>
+                        <div class="mb-3">
+                      <label>Logo</label>
+                      <input type="file" name="logo" class="form-control">
+                        @error('logo')
+                          <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
                       <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>
                   </div>

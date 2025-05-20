@@ -33,13 +33,19 @@ class ProdiController extends Controller
         $validateData = $request->validate(
             [
                 'nama' => 'required|min:5|max:20',
-                'kode_prodi' => 'required|min:2|max:2'
+                'kode_prodi' => 'required|min:2|max:2',
+                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // validasi file
                 ]
         );
 
         $prodi = new Prodi();
         $prodi->nama = $validateData['nama']; //$request->nama
         $prodi->kode_prodi = $validateData['kode_prodi'];
+        if ($request->hasFile('logo')) {
+        $path = $request->file('logo')->store('logo_prodi', 'public');
+        $prodi->logo = $path;
+        }
+
         $prodi->save();
 
         //Prodi::create([

@@ -65,6 +65,7 @@
                     <table class="table table-bordered table-striped">
                       <thead>
                         <tr>
+                          <th>Logo</th>
                           <th>No</th>
                           <th>Nama Prodi</th>
                           <th>Kode Prodi</th>
@@ -86,6 +87,13 @@
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus prodi ini?')">Delete</button>
                               </form>
                             </td>
+                            <td>
+                            @if ($prodi->logo)
+                              <img src="{{ asset('storage/' . $prodi->logo) }}" alt="Logo" width="50">
+                            @else
+                              -
+                            @endif
+                          </td>
                           </tr>
                         @endforeach
                       </tbody>                 

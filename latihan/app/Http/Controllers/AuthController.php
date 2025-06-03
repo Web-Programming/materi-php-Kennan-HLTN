@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-
-
 
 class AuthController extends Controller
 {
     function login(){
         $user = Auth::user();
-        // jika user sudah login
+
+        //jik user sudah login
         if($user){
-            // cek level
-            if($user->level =='admin') {
-                return redirect()->intended('admin'); 
-            } else if($user->level == 'user'){
+            //cek level
+            if($user->level == 'admin'){
+                return redirect()->intended('admin');
+            }else if($user->level == 'user'){
                 return redirect()->intended('user');
             }
         }
@@ -27,31 +26,30 @@ class AuthController extends Controller
         return view("login");
     }
 
-    function do_login(request $request){
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required|min:8'
-    ]);
-    // menyiapkan variabel cridentials
-        $cridentials = $request->only('email', 'password');
+    function do_login(Request $request){
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8'
+        ]);
+        //menyiapkan variabel cridentials
+        $credentials = $request->only('email', 'password');
 
-    // cek cridentials ke tabel users menggunakan auth
-        if(Auth::attempt($cridentials)){
-           // jika berhasil login
-           // cek level user
+        //cek cridentials ke tabel users meggunakan Auth
+        if(Auth::attempt($credentials)){
+            //jika berhasil login
+            //cek level user
             $user = Auth::user();
             if($user->level == 'admin'){
                 return redirect()->intended('admin');
-            }
-            else if($user->level == 'user'){
+            }else if($user->level == 'user'){
                 return redirect()->intended('user');
             }
             return redirect()->intended('/');
         }
 
-        // jika login gagal
+        //jika login gagal
         return redirect('login')
-            ->witherrors([
+            ->withErrors([
                 'failed' => 'User tidak ditemukan atau password yang anda masukkan salah'
             ])
             ->withInput();
@@ -62,29 +60,28 @@ class AuthController extends Controller
     }
 
     function do_register(Request $request){
-    $validator = Validator::make(
-        $request->all(),
-        [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8'
-        ]
-    );
-
-    if($validator->fails()){
-        return redirect('register')
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:8'
+            ]
+        );
+        if($validator->fails()){
+            return redirect("register")
             ->withErrors($validator)
-            ->withInput();
-    }
+            ->withInput();    
+        }
 
-    $user = new User();
-    $user->name = $request->name;
-    $user->email = $request->email;
-    $user->password = Hash::make($request->password);
-    $user->level = 'user';
-    $user->save();
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->level = 'user';
+        $user->save();
 
-    return redirect('login');
+        return redirect('login');
     }
 
     function logout(){

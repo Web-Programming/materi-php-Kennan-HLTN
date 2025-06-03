@@ -54,8 +54,9 @@
                     </div>
                   </div>
                   <div class="card-body">
-                    <a href="{{ url('prodi/create') }}" class="btn btn-success" >Buat Prodi Baru</a>
-
+                    @can('create', App\Models\Prodi::class)
+                      <a href="{{ url(auth()->user()->level.'/prodi/create') }}" class="btn btn-success" >Buat Prodi Baru</a>
+                    @endcan
                     @if (session('status'))
                       <div class="alert alert-success">
                           {{ session('status') }}
@@ -65,11 +66,13 @@
                     <table class="table table-bordered table-striped">
                       <thead>
                         <tr>
-                          <th>Logo</th>
                           <th>No</th>
                           <th>Nama Prodi</th>
                           <th>Kode Prodi</th>
-                          <th>Aksi</th>
+                          <th>Logo</th>
+                          @canAny(['update', 'delete', 'view'], App\Models\Prodi::class)
+                            <th>Aksi</th>
+                          @endcanAny
                         </tr>
                       </thead>
                       <tbody>
@@ -78,22 +81,30 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $prodi->nama }}</td>
                             <td>{{ $prodi->kode_prodi }}</td>
-                            <td>
-                              <a href="{{ url('prodi/'.$prodi->id.'/edit') }}" class="btn btn-success btn-sm">Edit</a>
-                              <a href="{{ url('prodi/'.$prodi->id) }}" class="btn btn-secondary btn-sm">Detail</a>
-                              <form action="{{ url('prodi/'.$prodi->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus prodi ini?')">Delete</button>
-                              </form>
+                            <td>{{ $prodi->logo }}
+                              @if ($prodi->logo)
+                                <img src="{{ asset('images/'.$prodi->logo) }}" alt="" width="100px">
+                              @else
+                                <p>Logo tidak ada</p>
+                              @endif
                             </td>
-                            <td>
-                            @if ($prodi->logo)
-                              <img src="{{ asset('storage/' . $prodi->logo) }}" alt="Logo" width="50">
-                            @else
-                              -
-                            @endif
-                          </td>
+                            @canAny(['update', 'delete', 'view'], App\Models\Prodi::class)
+                              <td>
+                                <form action="{{ url(auth()->user()->level.'/prodi/'.$prodi->id) }}" method="post">
+                                  @csrf
+                                  @method('DELETE')
+                                  @can('view', $prodi)
+                                  <a href="{{ url(auth()->user()->level.'/prodi/'.$prodi->id) }}" class="btn btn-link" >Detail</a>
+                                  @endcan
+                                  @can('update', $prodi)
+                                  <a href="{{ url(auth()->user()->level.'/prodi/'.$prodi->id.'/edit') }}" class="btn btn-link" >Edit</a>
+                                  @endcan
+                                  @can('delete', $prodi)
+                                  <button type="submit" class="btn btn-link">Delete</button>
+                                  @endcan
+                                </form>
+                              </td>
+                            @endcanAny
                           </tr>
                         @endforeach
                       </tbody>                 
